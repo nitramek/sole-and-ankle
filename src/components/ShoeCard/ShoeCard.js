@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 
-import { COLORS, WEIGHTS } from '../../constants';
-import { formatPrice, pluralize, isNewShoe } from '../../utils';
+import {COLORS, WEIGHTS} from '../../constants';
+import {formatPrice, pluralize, isNewShoe} from '../../utils';
 import Spacer from '../Spacer';
 
 const ShoeCard = ({
@@ -26,31 +26,34 @@ const ShoeCard = ({
   // will triumph and be the variant used.
   // prettier-ignore
   const variant = typeof salePrice === 'number'
-    ? ['on-sale', 'Sale']
-    : isNewShoe(releaseDate)
-      ? ['new-release', 'Just released!']
-      : ['default', '']
-
+      ? ['on-sale', 'Sale']
+      : isNewShoe(releaseDate)
+          ? ['new-release', 'Just released!']
+          : ['default', '']
 
   return (
-    <Link href={`/shoe/${slug}`}>
-      <Wrapper>
-        <ImageWrapper>
-          <Image alt="" src={imageSrc} />
-        </ImageWrapper>
-        <Spacer size={12} />
-        <Row>
-          <Name>{name}</Name>
-          <Price>{formatPrice(price)}</Price>
-        </Row>
-        <Row>
-          <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
-        </Row>
-        <Tag className={variant[0]} >
-          {variant[1]}
-        </Tag>
-      </Wrapper>
-    </Link>
+      <Link href={`/shoe/${slug}`}>
+        <Wrapper>
+          <ImageWrapper>
+            <Image alt="" src={imageSrc}/>
+            <Tag className={variant[0]}>
+              {variant[1]}
+            </Tag>
+          </ImageWrapper>
+          <Spacer size={12}/>
+          <Row>
+            <Name>{name}</Name>
+            <Price style={{
+              '--color': variant[0] === 'on-sale' ? COLORS.gray["700"] : undefined,
+              '--decoration': variant[0] === 'on-sale' ? 'line-through' : undefined,
+            }}>{formatPrice(price)}</Price>
+          </Row>
+          <Row>
+            <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
+            {variant[0] === 'on-sale' ? <SalePrice>{formatPrice(salePrice)}</SalePrice> : undefined}
+          </Row>
+        </Wrapper>
+      </Link>
   );
 };
 
@@ -61,19 +64,22 @@ const Link = styled.a`
 
 const Tag = styled.div`
   position: absolute;
-  top: 16px;
-  right: -6px;
+  top: 12px;
+  right: -4px;
   border-radius: 2px;
-  color: white;
-  padding: 8px 8px;
-  font-weight: 600;
+  color: ${COLORS.white};
+  height: 32px;
+  line-height: 32px;
+  padding: 0 10px;
+  font-size: ${14 / 16}rem;
+  font-weight: ${WEIGHTS.bold};
 
   &.new-release {
-    background-color: hsl(240, 60%, 63%);
+    background-color: ${COLORS.secondary};
   }
 
   &.on-sale {
-    background-color: hsl(339, 65%, 47%);
+    background-color: ${COLORS.primary};
   }
 `;
 
@@ -85,10 +91,14 @@ const ImageWrapper = styled.div`
   position: relative;
 `;
 
-const Image = styled.img``;
+const Image = styled.img`
+  border-radius: 16px 16px 4px 4px;
+`;
 
 const Row = styled.div`
   font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Name = styled.h3`
@@ -96,7 +106,10 @@ const Name = styled.h3`
   color: ${COLORS.gray[900]};
 `;
 
-const Price = styled.span``;
+const Price = styled.span`
+  color: var(--color);
+  text-decoration: var(--decoration);
+`;
 
 const ColorInfo = styled.p`
   color: ${COLORS.gray[700]};
