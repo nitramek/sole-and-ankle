@@ -12,7 +12,9 @@ const Header = () => {
     <header>
       <SuperHeader />
       <MainHeader>
-        <Logo />
+        <Side>
+          <Logo />
+        </Side>
         <Nav>
           <NavLink href="/sale">Sale</NavLink>
           <NavLink href="/new">New&nbsp;Releases</NavLink>
@@ -21,6 +23,7 @@ const Header = () => {
           <NavLink href="/kids">Kids</NavLink>
           <NavLink href="/collections">Collections</NavLink>
         </Nav>
+        <Side />
       </MainHeader>
     </header>
   );
@@ -29,15 +32,21 @@ const Header = () => {
 const MainHeader = styled.div`
   padding: 16px 32px;
   border-bottom: 1px solid ${COLORS.gray[300]};
+  display: flex;
+  height: 72px;
+  align-items: baseline;
+`;
+const Side = styled.div`
+  flex: 1;
 `;
 
 const Nav = styled.nav`
   width: fit-content;
   display: flex;
   justify-content: space-evenly;
-  gap: 64px;
-  margin-left: auto;
-  margin-right: auto;
+  gap: 48px;
+  margin-left: 48px;
+  margin-right: 48px;
 `;
 
 const NavLink = styled.a`
