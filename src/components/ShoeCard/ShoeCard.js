@@ -26,10 +26,11 @@ const ShoeCard = ({
   // will triumph and be the variant used.
   // prettier-ignore
   const variant = typeof salePrice === 'number'
-    ? 'on-sale'
+    ? ['on-sale', 'Sale']
     : isNewShoe(releaseDate)
-      ? 'new-release'
-      : 'default'
+      ? ['new-release', 'Just released!']
+      : ['default', '']
+
 
   return (
     <Link href={`/shoe/${slug}`}>
@@ -45,6 +46,9 @@ const ShoeCard = ({
         <Row>
           <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
         </Row>
+        <Tag className={variant[0]} >
+          {variant[1]}
+        </Tag>
       </Wrapper>
     </Link>
   );
@@ -55,7 +59,27 @@ const Link = styled.a`
   color: inherit;
 `;
 
-const Wrapper = styled.article``;
+const Tag = styled.div`
+  position: absolute;
+  top: 16px;
+  right: -6px;
+  border-radius: 2px;
+  color: white;
+  padding: 8px 8px;
+  font-weight: 600;
+
+  &.new-release {
+    background-color: hsl(240, 60%, 63%);
+  }
+
+  &.on-sale {
+    background-color: hsl(339, 65%, 47%);
+  }
+`;
+
+const Wrapper = styled.article`
+  position: relative;
+`;
 
 const ImageWrapper = styled.div`
   position: relative;
